@@ -5,34 +5,66 @@ from wallet import PlayerWallet
 from dice_game import DiceGame, OverUnder7
 
 
+def main() -> None:
+    print("=== Bem-vindo ao Casino Python ===")
+
+    carteira = PlayerWallet(100.0)
+    jogo_classico = DiceGame("Dado")
+    jogo_over_under = OverUnder7("Dado")
+
+    while True:
+        print("\n" + "="*40)
+        carteira.show_balance()
+        
+        if carteira.balance <= 0:
+            print(" Você faliu! O cassino agradece o seu dinheiro. Fim de jogo.")
+            break
+            
+        print("\nEscolha o seu jogo:")
+        print("[1] Classic 6 Dice (Aposte na sorte para tirar o número 6!)")
+        print("[2] Over/Under 7 (Aposte na soma de dois dados)")
+        print("[3] Sair do Cassino")
+        
+        opcao = input("\nDigite a sua opção: ").strip()
+        
+        if opcao == '3':
+            print(f"Você saiu do cassino com R$ {carteira.balance:.2f}. Volte sempre!")
+            break
+            
+        if opcao not in ['1', '2']:
+            print(" Opção inválida. Escolha um número do menu.")
+            continue
+
+        try:
+            valor_aposta = float(input("Quanto quer apostar? R$ "))
+        except ValueError:
+            print(" Por favor, digite um valor numérico válido!")
+            continue
+
+        if carteira.try_place_bet(valor_aposta):
+            resultado = 0.0
+            
+            if opcao == '1':
+                print(f"\n Rolando os dados no {jogo_classico.name}...")
+                resultado = jogo_classico.without_choice_play(valor_aposta)
+                
+            elif opcao == '2':
+                escolha = input("Sua escolha [over] [under] [seven]: ").strip().lower()
+                print(f"\n Rolando os dados no {jogo_over_under.name} para {escolha.upper()}...")
+                
+                try:
+                    resultado = jogo_over_under.with_choice_play(valor_aposta, escolha)
+                except Exception as e:
+                    print(f"Erro na aposta: {e}")
+                    carteira.add_winnings(valor_aposta) 
+                    continue
+
+            if resultado > 0.0:
+                print(f"BINGO! Você ganhou R$ {resultado:.2f}!")
+                carteira.add_winnings(resultado)
+            else:
+                print("Que azar! A banca levou a sua aposta.")
+
+
 if __name__ == "__main__":
-    print("=== Simulador de Probabilidades: Casino ===")
-    print("--- Abrindo a mesa de Classic Dice ---")
-
-    meu_jogo = DiceGame("Dado")
-    valor_aposta = 10.0
-    print(f"\nRolando os dados... Apostando R$ {valor_aposta} na esperança de tirar um 6!")
-    resultado = meu_jogo.without_choice_play(valor_aposta)
-
-    if resultado > 0.0:
-        print(f"Você tirou o número 6 e ganhou R$ {resultado:.2f}!\n")
-    else:
-        print(f"Que azar! Você não tirou o 6 e a banca ficou com o seu dinheiro.")
-
-    print("--- Fechando mesa de Classic Dice ---\n")
-    print("--- Abrindo a mesa de Over/Under 7 ---")
-    print("Opções de escolhas:\nOver (Acima do número 7)\nUnder (Abaixo do número 7)\nSeven (O número 7)\n")
-    player_bet_choice = input("Digite sua escolha: ")
-
-    seven_game = OverUnder7("Dado")
-    valor_aposta = 20.0
-    print(f"Rolando os dados... Apostando R$ {valor_aposta} na esperança de acertar no {player_bet_choice}")
-    resultado = seven_game.with_choice_play(valor_aposta, player_bet_choice)
-
-    if resultado == valor_aposta * 2.0:
-        print(f"Você escolheu {player_bet_choice} e ganhou R${resultado:.2f}!\n")
-    elif resultado == valor_aposta * 4.0:
-        print(f"Que sorte! Você escolheu {player_bet_choice} e ganhou R${resultado:.2f}!!\n")
-    else:
-        print(f"Que azar! Você escolheu {player_bet_choice} e perdeu")
-    
+    main()
