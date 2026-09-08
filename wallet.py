@@ -17,4 +17,6 @@ class PlayerWallet:
         """Adiciona na conta o dinheiro recebido pelas apostas"""
         self.balance += amount
 
-    
+    def show_balance(self) -> None:
+        """Mostra a carteira atual"""
+        print(f"Saldo atual: R${self.balance:.2f}")
