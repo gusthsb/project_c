@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 class PlayerWallet:
     def __init__(self, initial_balance: float = 100.0) -> None:
         self.balance: float = initial_balance
@@ -7,7 +8,10 @@ class PlayerWallet:
     def try_place_bet(self, amount: float) -> bool:
         """Tenta fazer uma aposta. Retorna True se tiver saldo"""
         if amount > self.balance:
-            print(f"Saldo insuficiente! Você tem no momento R${self.balance:.2f}.")
+            print(
+                f"Saldo insuficiente! Você tem"
+                f" no momento R${self.balance:.2f}."
+            )
             return False
         else:
             self.balance -= amount

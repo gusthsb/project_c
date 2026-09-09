@@ -7,10 +7,32 @@ from casino_base import CasinoGame
 class RouletteGame(CasinoGame):
     def __init__(self, name: str) -> None:
         super().__init__("Roleta americana")
-        self.red_numbers = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36}
+        self.red_numbers = {
+            1,
+            3,
+            5,
+            7,
+            9,
+            12,
+            14,
+            16,
+            18,
+            19,
+            21,
+            23,
+            25,
+            27,
+            30,
+            32,
+            34,
+            36,
+        }
 
     def without_choice_play(self, bet_amount: float) -> float:
-        raise ValueError("A Roleta exige uma escolha (ex: 'red', 'black', 'even', 'odd' ou um número de 0 a 36).")
+        raise ValueError(
+            "A Roleta exige uma escolha "
+            "(ex: 'red', 'black', 'even', 'odd' ou um número de 0 a 36)."
+        )
 
     def with_choice_play(self, bet_amount: float, bet_choice: str) -> float:
         spin_result = random.randint(0, 36)
@@ -43,4 +65,3 @@ class RouletteGame(CasinoGame):
 
         else:
             return 0.0
-
