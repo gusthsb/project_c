@@ -1,7 +1,5 @@
-# Variáveis
 PYTHON = python3
 
-# Roda o seu cassino
 run:
 	$(PYTHON) main.py
 
