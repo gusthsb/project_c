@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from casino_base import CasinoGame
 from wallet import PlayerWallet
 from dice_game import DiceGame, OverUnder7
 
